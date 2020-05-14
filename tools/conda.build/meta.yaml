@@ -1,4 +1,4 @@
-{% set name = "cspice" %}
+{% set name = "sofa" %}
 {% set version = "1.0.0" %}
 
 package:
@@ -16,7 +16,7 @@ requirements:
 
 
 about:
-  home: https://github.com/ggarrett13/cspice
+  home: https://github.com/ggarrett13/sofa
   license: BSD
   license_family: BSD
-  summary: Mirror of SPICE Toolbox sourcecode with additional CMake files for building along the tudatBundle.
+  summary: Standards of Fundamental Astronomy code, copyright of the Board of the International Astronomical Union.

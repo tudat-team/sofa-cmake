@@ -11,79 +11,98 @@
 #    sofa library itself
 #
 
-# Specify minimum CMake version required to compile Tudat.
-cmake_minimum_required( VERSION 2.6 )
+# Specify minimum CMake version required to compile cspice.
+cmake_minimum_required(VERSION 3.3)
 
-# Specific Tudat project name.
-project( Sofa)
+# Specific project name.
+project(Sofa VERSION 1.0.0 LANGUAGES C)
 
-# Define the basic input (trunk).
-set(SRCROOT ${PROJECT_SOURCE_DIR})
+# Offer the user the choice of overriding the installation directories
+set(INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR ${CMAKE_INSTALL_PREFIX}/bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Installation directory for header files")
+set(INSTALL_DATA_DIR ${CMAKE_INSTALL_PREFIX}/data/ CACHE PATH "Installation directory for data files")
+set(INSTALL_MAN_DIR ${CMAKE_INSTALL_PREFIX} CACHE PATH "Installation directory for man documentation")
+set(INSTALL_CMAKE_DIR ${INSTALL_LIB_DIR}/cmake/sofa CACHE PATH "Installation directory for cmake config files")
 
-set(LIBROOT "${SRCROOT}/../lib")
-set(BINROOT "${SRCROOT}/../bin")
+# Make relative paths absolute (needed later on)
+foreach (p LIB BIN INCLUDE DATA CMAKE)
+    set(var INSTALL_${p}_DIR)
+    set(RELATIVE_INSTALL_${p}_DIR ${INSTALL_${p}_DIR})
+    if (NOT IS_ABSOLUTE "${${var}}")
+        set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+    endif ()
+endforeach ()
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIBROOT})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIBROOT})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINROOT})
+# Find relative paths for cmake-config file. (for find_package)
+set(Sofa_CMAKE_DIR "${INSTALL_CMAKE_DIR}")
+file(RELATIVE_PATH rel_include_dir "${Sofa_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
+file(RELATIVE_PATH rel_lib_dir     "${Sofa_CMAKE_DIR}" "${INSTALL_LIB_DIR}")
+file(RELATIVE_PATH rel_data_dir    "${Sofa_CMAKE_DIR}" "${INSTALL_DATA_DIR}")
+file(RELATIVE_PATH rel_bin_dir     "${Sofa_CMAKE_DIR}" "${INSTALL_BIN_DIR}")
+file(RELATIVE_PATH rel_man_dir     "${Sofa_CMAKE_DIR}" "${INSTALL_MAN_DIR}")
 
-if (WIN32)
- if (MSVC)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /Ox /W3 /FC -D_SCL_SECURE_NO_WARNINGS")
-   # Because we are using static boost libraries, with static runtime, we need to force MSVC to
-   # also use static runtime: (from http://www.cmake.org/Wiki/CMake_FAQ#Dynamic_Replace)
-   foreach(flag_var
-         CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-         CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-     # Find all dynamic runtime (MD) references and replace with static (MT)
-     if(${flag_var} MATCHES "/MD")
-       string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-     endif(${flag_var} MATCHES "/MD")
-   endforeach(flag_var)
- else( )
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -g -Woverloaded-virtual -Wold-style-cast -Wnon-virtual-dtor")
- endif( )
-else( )
- set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -g -Woverloaded-virtual -Wold-style-cast -Wnon-virtual-dtor")
-endif( )
+# Set relative paths for config.cmake.
+foreach (p include lib data bin man)
+    string(TOUPPER ${p} P)
+    set(var RELATIVE_${CMAKE_PROJECT_NAME}_${P}_DIR)
+    set(RELATIVE_${CMAKE_PROJECT_NAME}_${P}_DIR ${rel_${p}_dir})
+endforeach ()
 
-# Set CMake build-type. If it not supplied by the user (either directly as an argument of through
-# the "UserSettings.txt" file, the default built type is "Release". NB: It is important this
-# section is placed AFTER the "UserSettings.txt" file is included, to ensure that that the correct
-# indiciation is given for which build type has been selected.
-if((NOT CMAKE_BUILD_TYPE) OR (CMAKE_BUILD_TYPE STREQUAL "Release"))
-   message(STATUS "WARNING: building release version!")
-   set(CMAKE_BUILD_TYPE Release)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-   message(STATUS "WARNING: building debug version!")
-endif()
+# Set the source and header files.
+file(GLOB_RECURSE SOFA_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src
+        RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.h)
+file(GLOB_RECURSE SOFA_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src
+        RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.c)
 
-# Set the global macros for setting up targets.
-macro(setup_library_target target_name CUSTOM_OUTPUT_PATH)
- set_property(TARGET ${target_name} PROPERTY LIBRARY_OUTPUT_DIRECTORY "${LIBROOT}")
- set_property(TARGET ${target_name} PROPERTY ARCHIVE_OUTPUT_DIRECTORY "${LIBROOT}")
- install(TARGETS ${target_name} LIBRARY DESTINATION "${BINROOT}" ARCHIVE DESTINATION "${LIBROOT}")
-endmacro(setup_library_target)
+list(REMOVE_ITEM SOFA_SOURCE_FILES "t_sofa_c.c")
 
- #Set the source files.
+# Setup of library.
+add_library(sofa STATIC "${SOFA_SOURCE_FILES}")
 
-# Set the header files.
-#set(SOFA_HEADERS
-#  "${SRCROOT}/sofa.h"
-#  "${SRCROOT}/sofam.h"
-#)
-file(GLOB_RECURSE SOFA_SOURCES RELATIVE ${SRCROOT} *.c)
-file(GLOB_RECURSE SOFA_HEADERS RELATIVE ${SRCROOT} *.h)
+# Setup of namespaced library.
+add_library(Sofa::sofa ALIAS sofa)
 
-list(REMOVE_ITEM SOFA_SOURCES "t_sofa_c.c")
 
-# Add static libraries.
+# Installation of the library.
+install(TARGETS sofa
+        EXPORT sofa_export
+        LIBRARY DESTINATION ${RELATIVE_INSTALL_LIB_DIR}
+        ARCHIVE DESTINATION ${RELATIVE_INSTALL_LIB_DIR}
+        RUNTIME DESTINATION ${RELATIVE_INSTALL_BIN_DIR}
+        )
 
-add_library(sofa STATIC ${SOFA_SOURCES} ${SOFA_HEADERS})
+# Installation of the header files.
+install(DIRECTORY include/ DESTINATION "${RELATIVE_INSTALL_INCLUDE_DIR}")
 
+# Set <project>_LIBRARIES for <project>-config.cmake.
+set(Sofa_LIBRARIES "Sofa::sofa")
+
+# Testing.
 enable_testing()
-add_executable(sofa-test "${SRCROOT}/t_sofa_c.c")
-target_link_libraries(sofa-test sofa m)
-add_test(sofa-test "${BINROOT}/sofa-test")
+add_executable(sofa-test src/t_sofa_c.c)
+target_link_libraries(sofa-test Sofa::sofa m)
+add_test(sofa-test sofa-test)
+
+# Configure cmake files.
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/sofa-config.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/sofa-config.cmake" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/sofa-config.cmake" DESTINATION ${INSTALL_CMAKE_DIR})
+install(EXPORT sofa_export NAMESPACE Sofa:: DESTINATION "${RELATIVE_INSTALL_CMAKE_DIR}")
+
+# Take care of versioning.
+include(CMakePackageConfigHelpers)
+# NOTE: SameMinorVersion available only
+# since CMake 3.11.
+if (${CMAKE_VERSION} VERSION_LESS "3.11.0")
+    write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/sofa-config-version.cmake" VERSION ${Sofa_VERSION}
+            COMPATIBILITY SameMajorVersion)
+else ()
+    write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/sofa-config-version.cmake" VERSION ${Sofa_VERSION}
+            COMPATIBILITY SameMinorVersion)
+endif ()
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/sofa-config-version.cmake" DESTINATION "${RELATIVE_INSTALL_CMAKE_DIR}")
+
+
+
 
 # End of file.
