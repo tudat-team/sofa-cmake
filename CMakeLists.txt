@@ -81,7 +81,7 @@ set(Sofa_LIBRARIES "Sofa::sofa")
 # Testing.
 enable_testing()
 add_executable(sofa-test src/t_sofa_c.c)
-target_link_libraries(sofa-test Sofa::sofa m)
+target_link_libraries(sofa-test Sofa::sofa)
 add_test(sofa-test sofa-test)
 
 # Configure cmake files.

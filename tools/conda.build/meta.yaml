@@ -11,9 +11,9 @@ source:
 requirements:
     build:
         - cmake
-        - {{ compiler('c') }}              # [not win]
+        - make   # [unix]
+        - {{ compiler('c') }}
         - vs2017_{{ target_platform  }}    # [win]
-
 
 about:
   home: https://github.com/ggarrett13/sofa

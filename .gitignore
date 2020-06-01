@@ -66,3 +66,5 @@ Tudat/External/SpiceInterface/Kernels/KernelMerge/
 *.autosave
 *.~?~
 *.save
+cmake-build-debug/
+.idea/
