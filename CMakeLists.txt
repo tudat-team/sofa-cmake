@@ -77,6 +77,10 @@ endforeach ()
 #set(${PROJECT_NAME_UPPER}_BINARY_MAN_DIR      "${CMAKE_BINARY_DIR}/"                                CACHE PATH "Build directory for man documentation")
 #set(${PROJECT_NAME_UPPER}_BINARY_TESTS_DIR    "${CMAKE_BINARY_DIR}/tests/"                          CACHE PATH "Build directory for tests")
 #set(${PROJECT_NAME_UPPER}_BINARY_CMAKE_DIR    "${BINARY_LIB_DIR}/cmake/${PROJECT_NAME_LOWER}"       CACHE PATH "Build directory for cmake config files")
+#
+#if (NOT SOFA_BUILD_STATIC_LIBRARY)
+#    set(CMAKE_CXX_CREATE_SHARED_LIBRARY ON)
+#endif ()
 
 # Set the source files.
 set(SOFA_SOURCE_FILES
@@ -343,7 +347,7 @@ target_include_directories(sofa PUBLIC
 
 set_target_properties(sofa
         PROPERTIES
-        LINKER_LANGUAGE CXX
+        LINKER_LANGUAGE C
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
@@ -355,15 +359,16 @@ add_library(Sofa::sofa ALIAS sofa)
 # Testing.
 enable_testing()
 add_executable(sofa-test tests/t_sofa_c.c)
-target_link_libraries(sofa-test Sofa::sofa)
+target_link_libraries(sofa-test sofa)
+#set_target_properties(sofa-test PROPERTIES LINKER_LANGUAGE CXX)
 add_test(sofa-test sofa-test)
 
 # Installation of the library.
 install(TARGETS sofa
         EXPORT sofa_export
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${INSTALL_LIB_DIR}
+        ARCHIVE DESTINATION ${INSTALL_LIB_DIR}
+        RUNTIME DESTINATION ${INSTALL_BIN_DIR}
         )
 
 # Set <project>_LIBRARIES for <project>-config.cmake.

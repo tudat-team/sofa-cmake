@@ -74,3 +74,4 @@ build/
 .build/
 cmake_build-debug/
 cmake_build-release/
+install_test/
