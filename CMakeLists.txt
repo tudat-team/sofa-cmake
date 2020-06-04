@@ -343,7 +343,7 @@ target_include_directories(sofa PUBLIC
 
 set_target_properties(sofa
         PROPERTIES
-        LINKER_LANGUAGE CXX
+        LINKER_LANGUAGE C
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
