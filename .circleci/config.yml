@@ -4,7 +4,7 @@ orbs:
   win: circleci/windows@2.2.0
 
 jobs:
-  win64_m2w64gcc_anaconda3:
+  win64_m2w64gcc_build:
         executor:
           name: win/default
           shell: powershell.exe
@@ -53,7 +53,9 @@ jobs:
 
 workflows:
   version: 2.1
-  linux64:
+  win64:
     jobs:
       - win64_m2w64gcc_build
+  linux64:
+    jobs:
       - linux64_gcc7_build
