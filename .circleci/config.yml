@@ -1,0 +1,59 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  win64_m2w64gcc_anaconda3:
+        executor:
+          name: win/default
+          shell: powershell.exe
+        steps:
+          - checkout
+          - run: systeminfo
+          - run:
+              name: Build and test
+              shell: powershell.exe
+              command: |
+                mkdir library_prefix
+                $LIBRARY_PREFIX = $(pwd)/library_prefix
+                mkdir build
+                cd build
+                cmake ^
+                    -G "Visual Studio 16 2019" ^
+                    -DCMAKE_CXX_STANDARD=17 ^
+                    -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
+                    -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+                    -DCMAKE_BUILD_TYPE=Release ^
+                    ..
+                if errorlevel 1 exit 1
+                cmake --build . --config RelWithDebInfo --target install
+                if errorlevel 1 exit 1
+                ctest
+                if errorlevel 1 exit 1
+
+  linux64_gcc7_build:
+    docker:
+      - image: circleci/buildpack-deps:bionic
+    steps:
+      - checkout
+      - run:
+          name: Build and test
+          command: |
+            bash .circleci/conda.recipe/build.sh
+
+#      - run:
+#          name: Install and test
+#          command: |
+#            conda install --use-local tudatpy
+#            python -c 'from tudatpy import constants; print(constants.SPEED_OF_LIGHT)'
+#      - store_artifacts:
+#          path: /opt/conda/conda-bld/linux-64/
+#          destination: /linux-64
+
+workflows:
+  version: 2.1
+  linux64:
+    jobs:
+      - win64_m2w64gcc_build
+      - linux64_gcc7_build
