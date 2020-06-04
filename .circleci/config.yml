@@ -15,8 +15,8 @@ jobs:
               name: Build and test
               shell: powershell.exe
               command: |
-                mkdir library_prefix
-                $LIBRARY_PREFIX = $(pwd)\library_prefix
+                mkdir install_test
+                $LIBRARY_PREFIX = $(pwd)\install_test
                 mkdir build
                 cd build
                 cmake ^
@@ -40,6 +40,8 @@ jobs:
       - run:
           name: Build and test
           command: |
+            mkdir install_test
+            export PREFIX=$(pwd)/install_test
             bash .circleci/conda.recipe/build.sh
 
 #      - run:
