@@ -19,13 +19,16 @@ jobs:
                 $ProgressPreference = "SilentlyContinue"
                 Invoke-WebRequest -URI https://github.com/Kitware/CMake/releases/download/v3.16.4/cmake-3.16.4-win64-x64.zip -OutFile $Env:HOMEPATH\cmake-3.16.4-win64-x64.zip
                 Expand-Archive $Env:HOMEPATH\cmake-3.16.4-win64-x64.zip -DestinationPath "$Env:ProgramFiles"
-                Rename-Item "$Env:ProgramFiles\cmake-3.16.4-win64-x64" -NewName CMake
+                Rename-Item "$Env:ProgramFiles\cmake-3.16.4-win64-x64" -NewName cmake
+                if (-not (Get-Command cmake -ErrorAction SilentlyContinue)) {
+                  New-Alias -Name cmake -Value "$Env:ProgramFiles\CMake\bin\cmake.exe"
+                }
                 mkdir install_test
                 $LIBRARY_PREFIX = "$(pwd)/install_test"
                 mkdir build
                 cd build
                 cmake ^
-                    -G "Visual Studio 16 2019" ^
+                    -G "MinGW Makefiles" ^
                     -DCMAKE_CXX_STANDARD=17 ^
                     -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
                     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
