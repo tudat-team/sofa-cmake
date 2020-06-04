@@ -16,7 +16,7 @@ jobs:
               shell: powershell.exe
               command: |
                 mkdir install_test
-                $LIBRARY_PREFIX = $(pwd)\install_test
+                LIBRARY_PREFIX = "$(pwd)/install_test"
                 mkdir build
                 cd build
                 cmake ^
