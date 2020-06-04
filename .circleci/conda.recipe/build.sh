@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sudo apt-get install build-essential cmake
+
 mkdir build
 
 # shellcheck disable=SC2164

@@ -16,7 +16,7 @@ jobs:
               shell: powershell.exe
               command: |
                 mkdir library_prefix
-                $LIBRARY_PREFIX = $(pwd)/library_prefix
+                $LIBRARY_PREFIX = $(pwd)\library_prefix
                 mkdir build
                 cd build
                 cmake ^
