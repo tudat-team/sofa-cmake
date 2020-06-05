@@ -27,7 +27,7 @@ jobs:
                 $LIBRARY_PREFIX = "$(pwd)/install_test"
                 mkdir build
                 cd build
-                cmake -G "MinGW Makefiles" -DCMAKE_CXX_STANDARD=17 -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DCMAKE_BUILD_TYPE=Release ..
+                cmake -G "MSYS Makefiles" -DCMAKE_CXX_STANDARD=17 -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DCMAKE_BUILD_TYPE=Release ..
                 cmake --build . --config RelWithDebInfo --target install
                 ctest
 
