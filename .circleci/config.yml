@@ -7,10 +7,6 @@ executors:
   linux-bionic:
     docker:
       - image: circleci/buildpack-deps:bionic
-      
-  linux-continuumio:
-    docker:
-      - image: continuumio/miniconda3
 
   win-64:
     win/default
