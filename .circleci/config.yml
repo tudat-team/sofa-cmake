@@ -68,6 +68,7 @@ variables:
         # get build artifact path
         echo "\n\nGetting artifact name\n\n"
         conda_artifact=$(conda build --quiet --output .conda)
+        echo "conda_artifact: $conda_artifact"
         printf 'export CONDA_ARTIFACT=%s\n' "${conda_artifact}" >> $BASH_ENV
         source $BASH_ENV
 
