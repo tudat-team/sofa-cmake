@@ -91,7 +91,7 @@ variables:
       command: |
         source $BASH_ENV
         # update version in git to make sure that this transfers into conda env
-        git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git
+        git remote set-url origin "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
         git config --global user.email "${GITHUB_EMAIL}"
         git config --global user.name "${GITHUB_USERNAME}"
         git diff --quiet version || git commit version -m "[skip ci] ${CIRCLE_PROJECT_REPONAME} updated to ${NEW_GIT_TAG}"
@@ -167,7 +167,7 @@ jobs:
       - *install-build-essential
       - *initialise-conda
       - *lib_version
-#      - *update_version
+      - *update_version
       - *build
       - *deploy
 
