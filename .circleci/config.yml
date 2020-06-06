@@ -6,13 +6,11 @@ orbs:
 executors:
   linux-bionic:
     docker:
-      #      - image: continuumio/miniconda3
       - image: circleci/buildpack-deps:bionic
 
   win-64:
-    executor:
-      name: win/default
-      shell: bash.exe
+    name: win/default
+    shell: bash.exe
 
 # Job definitions
 variables:
