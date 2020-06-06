@@ -3,7 +3,7 @@
 
 This repository has been copied directly from http://www.iausofa.org, for use in related software projects on Github. The copyright of the code belongs to the Board of the International Astronomical Union. 
 
-SOFA SOftware License:
+SOFA Software License:
 
 By using this software you accept the following six terms and conditions which apply to its use.
 
