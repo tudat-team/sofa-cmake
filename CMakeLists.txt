@@ -20,7 +20,7 @@ if (EXISTS "${CMAKE_BINARY_DIR}/CMakeCache.txt")
 endif ()
 
 # Specific project name.
-project(Sofa VERSION 1.0.0 LANGUAGES C)
+project(Sofa VERSION 1.0.2 LANGUAGES C)
 
 # Get lower string name of PROJECT_NAME for directory configuration.
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
