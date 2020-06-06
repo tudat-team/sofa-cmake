@@ -70,6 +70,22 @@ variables:
         # mkdir test-reports
         # cp /tmp/*-junit.xml test-reports
 
+        # TEMPORARILY HERE
+        echo $BASH_ENV
+        export PATH=$HOME/miniconda/bin:$PATH
+        source $BASH_ENV
+        conda install anaconda-client
+        export ANACONDA_API_TOKEN=$ANACONDA_TOKEN
+        # upload to conda -- logout afterwards to release the token and avoid race conditions
+        # see the comment above where the version is calculated, to understand why both master
+        # and dev are being pushed.
+        if [ "${CIRCLE_BRANCH}" == "master" ]; then
+          anaconda upload --user ggarrett13 ${CONDA_ARTIFACT}
+        elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
+          anaconda upload --user ggarrett13 --label dev --version ${NEW_GIT_TAG} ${CONDA_ARTIFACT}
+        fi
+        anaconda logout
+
   deploy: &deploy
     run:
       name: Deploy new version to conda
@@ -107,7 +123,7 @@ jobs:
       - *install-build-essential
       - *initialise-conda
       - *build
-      - *deploy
+#      - *deploy
 
 workflows:
   version: 2.1
