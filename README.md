@@ -1,5 +1,6 @@
 [![Build Status](https://img.shields.io/circleci/project/github/tudat-team/tudat-sofa/master.svg?style=for-the-badge&logo=circleci)](https://circleci.com/gh/tudat-team/tudat-sofa)
-[![Conda](https://img.shields.io/conda/pn/tudat-team/tudat-sofa?color=orange&logo=anaconda&style=for-the-badge)](https://anaconda.org/tudat-team/tudat-sofa)
+[![Build Status](https://img.shields.io/travis/tudat-team/tudat-sofa/master.svg?logo=travis&style=for-the-badge)](https://travis-ci.org/tudat-team/tudat-sofa)
+[![Supported Platforms](https://img.shields.io/conda/pn/tudat-team/tudat-sofa?color=orange&logo=anaconda&style=for-the-badge)](https://anaconda.org/tudat-team/tudat-sofa)
 
 This repository has been copied directly from http://www.iausofa.org, for use in related software projects on Github. The copyright of the code belongs to the Board of the International Astronomical Union. 
 
