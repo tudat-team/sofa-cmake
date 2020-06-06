@@ -17,18 +17,18 @@ requirements:
         - m2w64-gcc                        # [win]
         - vs2017_{{ target_platform  }}    # [win]
 
-outputs:
-  - name: "{{ name }}"
-    files:
-      - lib/libsofa*{{ SHLIB_EXT }}   # [not win]
-      - lib/libsofa.so.*              # [linux]
-      - lib/libsofa.*.dylib           # [osx]
-      - Library/bin/sofa.dll          # [win]
-      - include/sofa            # [not win]
-      - lib/cmake/sofa          # [not win]
-      - Library/include/sofa    # [win]
-      - Library/lib/sofa.lib    # [win]
-      - Library/lib/cmake/sofa  # [win]
+#outputs:
+#  - name: "{{ name }}"
+#    files:
+#      - lib/libsofa*{{ SHLIB_EXT }}   # [not win]
+#      - lib/libsofa.so.*              # [linux]
+#      - lib/libsofa.*.dylib           # [osx]
+#      - Library/bin/sofa.dll          # [win]
+#      - include/sofa            # [not win]
+#      - lib/cmake/sofa          # [not win]
+#      - Library/include/sofa    # [win]
+#      - Library/lib/sofa.lib    # [win]
+#      - Library/lib/cmake/sofa  # [win]
 
 about:
   home: https://github.com/ggarrett13/sofa
