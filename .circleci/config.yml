@@ -21,7 +21,6 @@ variables:
     run:
       name: Download and install miniconda3
       command: |
-
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
         bash ~/miniconda.sh -b -p $HOME/miniconda3
         export PATH=$HOME/miniconda3/bin:$PATH
@@ -38,60 +37,46 @@ variables:
         # Exit on error.
         set -e
         # Core deps.
-        sudo apt-get install build-essential cmake
+        # sudo apt-get install build-essential cmake
 
 
   initialise-conda: &initialise-conda
     run:
       name: Initiate and setup conda env
       command: |
-        export PATH=$HOME/miniconda3/bin:$PATH
+        echo "export PATH=$HOME/miniconda3/bin:$PATH" >> $BASH_ENV ; source $BASH_ENV
         conda create --name build_env python=3.7 -y
         conda install conda-build -y
+        conda install anaconda-client -y
+        conda install conda-verify -y
+        conda config --add channels ggarrett13
 
   build: &build
     run:
       name: Build and test
       command: |
-        # source $BASH_ENV
-        export PATH=$HOME/miniconda3/bin:$PATH
+        source $BASH_ENV
+        # export PATH=$HOME/miniconda3/bin:$PATH
         echo "CONDA_BUILD_SYSROOT = $CONDA_BUILD_SYSROOT"
 
         # build the library
-        echo "\n\nRunning build\n\n"
+        echo "--- Running build ---"
         git submodule update --init --recursive
-        conda config --add channels ggarrett13
-        conda install conda-verify
-        # conda build --no-anaconda-upload .conda
-        conda build .conda
+        # conda config --add channels ggarrett13
+        # conda install conda-verify
+        conda build --no-anaconda-upload .conda
+        # conda build .conda
 
         # get build artifact path
-        echo "\n\nGetting artifact name\n\n"
+        echo "--- Getting artifact name ---"
         conda_artifact=$(conda build --quiet --output .conda)
         echo "conda_artifact: $conda_artifact"
-        printf 'export CONDA_ARTIFACT=%s\n' "${conda_artifact}" >> $BASH_ENV
-        source $BASH_ENV
+        printf "export CONDA_ARTIFACT=${conda_artifact}" >> $BASH_ENV ; source $BASH_ENV
 
         # merge the results from all of the tests into a single file for parsing
-        # echo "\n\nSaving test results\n\n"
+        # echo "--- Saving test results ---"
         # mkdir test-reports
         # cp /tmp/*-junit.xml test-reports
-
-        # TEMPORARILY HERE
-        echo $BASH_ENV
-        export PATH=$HOME/miniconda3/bin:$PATH
-        source $BASH_ENV
-        conda install anaconda-client
-        export ANACONDA_API_TOKEN=$ANACONDA_TOKEN
-        # upload to conda -- logout afterwards to release the token and avoid race conditions
-        # see the comment above where the version is calculated, to understand why both master
-        # and dev are being pushed.
-        if [ "${CIRCLE_BRANCH}" == "master" ]; then
-          anaconda upload --user ggarrett13 ${CONDA_ARTIFACT}
-        elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
-          anaconda upload --user ggarrett13 --label dev --version ${NEW_GIT_TAG} ${CONDA_ARTIFACT}
-        fi
-        anaconda logout
 
   deploy: &deploy
     run:
@@ -103,10 +88,8 @@ variables:
           - /rc-.*/
 
       command: |
-        echo $BASH_ENV
-        export PATH=$HOME/miniconda3/bin:$PATH
         source $BASH_ENV
-        conda install anaconda-client
+        echo "CONDA_ARTIFACT: ${CONDA_ARTIFACT}"
         export ANACONDA_API_TOKEN=$ANACONDA_TOKEN
         # upload to conda -- logout afterwards to release the token and avoid race conditions
         # see the comment above where the version is calculated, to understand why both master
@@ -130,7 +113,7 @@ jobs:
       - *install-build-essential
       - *initialise-conda
       - *build
-#      - *deploy
+      - *deploy
 
 workflows:
   version: 2.1
@@ -139,4 +122,4 @@ workflows:
       - build-and-test:
           matrix:
             parameters:
-              os: [linux-bionic, win-64, linux-continuumio]
+              os: [linux-bionic]
