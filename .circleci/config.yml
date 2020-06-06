@@ -56,7 +56,8 @@ variables:
         echo "\n\nRunning build\n\n"
         git submodule update --init --recursive
         conda config --add channels ggarrett13
-        conda build --no-anaconda-upload --quiet .conda
+        conda install conda-verify
+        conda build --no-anaconda-upload .conda
 
         # get build artifact path
         echo "\n\nGetting artifact name\n\n"
@@ -80,6 +81,7 @@ variables:
 
       command: |
         export PATH=$HOME/miniconda/bin:$PATH
+        source $BASH_ENV
         conda install anaconda-client
         export ANACONDA_API_TOKEN=$ANACONDA_TOKEN
         # upload to conda -- logout afterwards to release the token and avoid race conditions
