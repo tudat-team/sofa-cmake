@@ -149,7 +149,8 @@ variables:
         elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
           # Causing an issue currently, will be fixed.
           # anaconda upload -l "dev" -t "${ANACONDA_TOKEN}" -v "${NEW_GIT_TAG}" "${CONDA_ARTIFACT}"
-          anaconda upload -l "dev" -v "${NEW_GIT_TAG}" "${CONDA_ARTIFACT}"
+          # anaconda upload -l "dev" -v "${NEW_GIT_TAG}" "${CONDA_ARTIFACT}"
+          anaconda upload -l "dev" "${CONDA_ARTIFACT}"
           echo "NEW_GIT_TAG: ${NEW_GIT_TAG}"
           echo "CONDA_ARTIFACT: ${CONDA_ARTIFACT}"
         fi
