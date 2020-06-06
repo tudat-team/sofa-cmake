@@ -19,11 +19,11 @@ variables:
       command: |
 
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-        bash ~/miniconda.sh -b -p $HOME/miniconda
-        export PATH=$HOME/miniconda/bin:$PATH
+        bash ~/miniconda.sh -b -p $HOME/miniconda3
+        export PATH=$HOME/miniconda3/bin:$PATH
         conda init bash
         conda update --yes conda  # Update CONDA without command line prompt
-        #eval "$($HOME/miniconda/bin/conda shell.bash hook)"
+        #eval "$($HOME/miniconda3/bin/conda shell.bash hook)"
 
   install-build-essential: &install-build-essential
     run:
@@ -41,7 +41,7 @@ variables:
     run:
       name: Initiate and setup conda env
       command: |
-        export PATH=$HOME/miniconda/bin:$PATH
+        export PATH=$HOME/miniconda3/bin:$PATH
         conda create --name build_env python=3.7 -y
         conda install conda-build -y
 
@@ -50,7 +50,7 @@ variables:
       name: Build and test
       command: |
         # source $BASH_ENV
-        export PATH=$HOME/miniconda/bin:$PATH
+        export PATH=$HOME/miniconda3/bin:$PATH
         echo "CONDA_BUILD_SYSROOT = $CONDA_BUILD_SYSROOT"
 
         # build the library
@@ -58,7 +58,8 @@ variables:
         git submodule update --init --recursive
         conda config --add channels ggarrett13
         conda install conda-verify
-        conda build --no-anaconda-upload .conda
+        # conda build --no-anaconda-upload .conda
+        conda build .conda
 
         # get build artifact path
         echo "\n\nGetting artifact name\n\n"
@@ -73,7 +74,7 @@ variables:
 
         # TEMPORARILY HERE
         echo $BASH_ENV
-        export PATH=$HOME/miniconda/bin:$PATH
+        export PATH=$HOME/miniconda3/bin:$PATH
         source $BASH_ENV
         conda install anaconda-client
         export ANACONDA_API_TOKEN=$ANACONDA_TOKEN
@@ -98,7 +99,7 @@ variables:
 
       command: |
         echo $BASH_ENV
-        export PATH=$HOME/miniconda/bin:$PATH
+        export PATH=$HOME/miniconda3/bin:$PATH
         source $BASH_ENV
         conda install anaconda-client
         export ANACONDA_API_TOKEN=$ANACONDA_TOKEN
