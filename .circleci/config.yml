@@ -9,8 +9,7 @@ executors:
       - image: circleci/buildpack-deps:bionic
 
   win-64:
-    name: win/default
-    shell: bash.exe
+    win/default
 
 # Job definitions
 variables:
