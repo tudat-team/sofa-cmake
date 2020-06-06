@@ -110,7 +110,7 @@ workflows:
   version: 2.1
   build-test-deploy:
     jobs:
-      - btd:
+      - build-and-test:
           matrix:
             parameters:
               os: [linux-bionic, win-64]
