@@ -48,7 +48,7 @@ variables:
     run:
       name: Build and test
       command: |
-        # source $BASH_ENV
+        source $BASH_ENV
         export PATH=$HOME/miniconda/bin:$PATH
         echo "CONDA_BUILD_SYSROOT = $CONDA_BUILD_SYSROOT"
 
@@ -80,6 +80,7 @@ variables:
           - /rc-.*/
 
       command: |
+        echo $BASH_ENV
         export PATH=$HOME/miniconda/bin:$PATH
         source $BASH_ENV
         conda install anaconda-client
