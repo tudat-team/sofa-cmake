@@ -6,7 +6,7 @@ package:
   version: "{{ version }}"
 
 source:
-  path: ../../
+  path: ../
 #  git_rev: aaf8afe3fdf16be1da09612d7e71f169605d0703
 #  git_url: https://github.com/ggarrett13/sofa.git
 
