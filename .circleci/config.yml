@@ -89,6 +89,7 @@ variables:
 
       command: |
         source $BASH_ENV
+        sh +x -c 'anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD'
         echo "CONDA_ARTIFACT: ${CONDA_ARTIFACT}"
         export ANACONDA_API_TOKEN=$ANACONDA_TOKEN
         # upload to conda -- logout afterwards to release the token and avoid race conditions
