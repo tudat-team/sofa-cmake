@@ -95,12 +95,10 @@ variables:
         # see the comment above where the version is calculated, to understand why both master
         # and dev are being pushed.
         if [ "${CIRCLE_BRANCH}" == "master" ]; then
-          conda config --add channels https://conda.anaconda.org/t/$ANACONDA_API_TOKEN/ggarrett13/
-          anaconda upload -u ggarrett13 "${CONDA_ARTIFACT}"
+          anaconda upload -u ggarrett13 -t "${$ANACONDA_API_TOKEN}" "${CONDA_ARTIFACT}"
           echo "CONDA_ARTIFACT: ${CONDA_ARTIFACT}"
         elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
-          conda config --add channels https://conda.anaconda.org/t/$ANACONDA_API_TOKEN/ggarrett13/label/dev
-          anaconda upload -u ggarrett13 -l "dev" -v "${NEW_GIT_TAG}" "${CONDA_ARTIFACT}"
+          anaconda upload -u ggarrett13 -l "dev" -t "${$ANACONDA_API_TOKEN}" -v "${NEW_GIT_TAG}" "${CONDA_ARTIFACT}"
           echo "NEW_GIT_TAG: ${NEW_GIT_TAG}"
           echo "CONDA_ARTIFACT: ${CONDA_ARTIFACT}"
         fi
