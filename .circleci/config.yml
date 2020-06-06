@@ -17,6 +17,7 @@ variables:
     run:
       name: Download and install miniconda3
       command: |
+
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
         bash ~/miniconda.sh -b -p $HOME/miniconda
         export PATH=$HOME/miniconda/bin:$PATH
@@ -48,7 +49,7 @@ variables:
     run:
       name: Build and test
       command: |
-        source $BASH_ENV
+        # source $BASH_ENV
         export PATH=$HOME/miniconda/bin:$PATH
         echo "CONDA_BUILD_SYSROOT = $CONDA_BUILD_SYSROOT"
 
