@@ -333,8 +333,6 @@ else ()
     add_library(sofa SHARED "${SOFA_SOURCE_FILES}")
 endif ()
 
-target_link_libraries(sofa PRIVATE m)
-
 # Add headers to library target.
 target_include_directories(sofa PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -355,7 +353,7 @@ add_library(Sofa::sofa ALIAS sofa)
 # Testing.
 enable_testing()
 add_executable(sofa-test tests/t_sofa_c.c)
-target_link_libraries(sofa-test Sofa::sofa)
+target_link_libraries(sofa-test Sofa::sofa m)
 add_test(sofa-test sofa-test)
 
 # Installation of the library.
