@@ -31,7 +31,7 @@ string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 #  Offer the user the choice of defining the build variation.
 # +============================================================================
 # Build static library instead of dynamic.
-option(SOFA_BUILD_STATIC_LIBRARY "Build sofa as a static library, instead of dynamic." OFF)
+option(SOFA_BUILD_STATIC_LIBRARY "Build sofa as a static library, instead of dynamic." ON)
 
 # +============================================================================
 # INSTALL TREE CONFIGURATION (Project name independent)
