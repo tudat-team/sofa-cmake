@@ -31,7 +31,7 @@ string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
 #  Offer the user the choice of defining the build variation.
 # +============================================================================
 # Build static library instead of dynamic.
-option(SOFA_BUILD_STATIC_LIBRARY "Build sofa as a static library, instead of dynamic." OFF)
+option(SOFA_BUILD_STATIC_LIBRARY "Build sofa as a static library, instead of dynamic." ON)
 
 # +============================================================================
 # INSTALL TREE CONFIGURATION (Project name independent)
@@ -331,8 +331,6 @@ if (SOFA_BUILD_STATIC_LIBRARY)
     add_library(sofa STATIC "${SOFA_SOURCE_FILES}")
 else ()
     add_library(sofa SHARED "${SOFA_SOURCE_FILES}")
-    # Link to .m lib
-    target_link_libraries(sofa PRIVATE m)
 endif ()
 
 # Add headers to library target.
@@ -355,15 +353,15 @@ add_library(Sofa::sofa ALIAS sofa)
 # Testing.
 enable_testing()
 add_executable(sofa-test tests/t_sofa_c.c)
-target_link_libraries(sofa-test Sofa::sofa)
+target_link_libraries(sofa-test Sofa::sofa m)
 add_test(sofa-test sofa-test)
 
 # Installation of the library.
 install(TARGETS sofa
         EXPORT sofa_export
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION  "${INSTALL_LIB_DIR}"
+        ARCHIVE DESTINATION  "${INSTALL_LIB_DIR}"
+        RUNTIME DESTINATION  "${INSTALL_BIN_DIR}"
         )
 
 # Set <project>_LIBRARIES for <project>-config.cmake.
