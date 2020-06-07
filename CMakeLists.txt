@@ -331,9 +331,9 @@ if (SOFA_BUILD_STATIC_LIBRARY)
     add_library(sofa STATIC "${SOFA_SOURCE_FILES}")
 else ()
     add_library(sofa SHARED "${SOFA_SOURCE_FILES}")
-    # Link to .m lib
-    target_link_libraries(sofa PRIVATE m)
 endif ()
+
+target_link_libraries(sofa PRIVATE m)
 
 # Add headers to library target.
 target_include_directories(sofa PUBLIC
@@ -361,9 +361,9 @@ add_test(sofa-test sofa-test)
 # Installation of the library.
 install(TARGETS sofa
         EXPORT sofa_export
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION  "${INSTALL_LIB_DIR}"
+        ARCHIVE DESTINATION  "${INSTALL_LIB_DIR}"
+        RUNTIME DESTINATION  "${INSTALL_BIN_DIR}"
         )
 
 # Set <project>_LIBRARIES for <project>-config.cmake.
