@@ -9,11 +9,12 @@ branches:
 
 before_install:
   - chmod +x ./.travis_scripts/conda_setup.sh
+  - chmod +x ./.travis_scripts/install_miniconda.sh
   - chmod +x ./.travis_scripts/lib_version.sh
   - chmod +x ./.travis_scripts/build_test.sh
   - chmod +x ./.travis_scripts/deploy.sh
+  - chmod +x ./tools/install_deps.sh
   #  - sudo apt-get update
-#  - chmod +x ./tools/install_deps.sh
 #  - chmod +x ./tools/install_travis.sh
 
 #  - sudo apt-get -y install libxml2-dev
@@ -21,18 +22,21 @@ before_install:
 
 matrix:
   include:
-    - env: BUILD_TYPE="OSXDebug"
+    #    - env: BUILD_TYPE="OSXDebug"
+    #      os: osx
+    #      osx_image: xcode9.4
+    - env:
+        - BUILD_TYPE="OSXRelease"
+        - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
       os: osx
       osx_image: xcode9.4
-    - env: BUILD_TYPE="OSXRelease"
-      os: osx
-      osx_image: xcode9.4
+
 
 jobs:
   include:
     - stage: "Install dependencies and setup"
     - name: "Install miniconda 3"
-      script: ./.travis_scripts/install_miniconda.sh
+      script: ./.travis_scripts/install_miniconda.sh && ./tools/install_deps.sh
     - name: "Initialise conda"
       script: ./.travis_scripts/conda_setup.sh
     - name: "Get lib versions"
