@@ -16,6 +16,10 @@ cmake \
 
 make -j2
 
-ctest
+ctest -T Test
+
+# Extract test.xml results to $HOME/tmp/test-reports
+mkdir $HOME/tmp/test-reports
+find ./Testing -name \*.xml -exec cp {} $HOME/tmp/test-reports/test.xml \;
 
 make install
