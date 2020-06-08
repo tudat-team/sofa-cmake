@@ -14,7 +14,7 @@ cmake \
     -DSOFA_BUILD_STATIC_LIBRARY=1 \
     ..
 
-make -j2
+make
 
 ctest -T Test
 
