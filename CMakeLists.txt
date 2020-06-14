@@ -354,6 +354,11 @@ add_library(Sofa::sofa ALIAS sofa)
 enable_testing()
 add_executable(sofa-test tests/t_sofa_c.c)
 
+target_include_directories(sofa-test PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+        )
+
 if(NOT MSVC)
     target_link_libraries(sofa-test Sofa::sofa m)
 endif(NOT MSVC)
