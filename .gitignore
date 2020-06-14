@@ -73,4 +73,8 @@ cmake-build-release/
 build/
 .build/
 cmake_build-debug/
-cmake_build-release/
+cmake_build-release/# conda smithy ci-skeleton start
+*.pyc
+
+build_artifacts
+# conda smithy ci-skeleton end

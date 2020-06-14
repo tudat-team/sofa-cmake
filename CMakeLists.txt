@@ -353,7 +353,11 @@ add_library(Sofa::sofa ALIAS sofa)
 # Testing.
 enable_testing()
 add_executable(sofa-test tests/t_sofa_c.c)
-target_link_libraries(sofa-test Sofa::sofa m)
+
+if(NOT MSVC)
+    target_link_libraries(sofa-test Sofa::sofa m)
+endif(NOT MSVC)
+
 add_test(sofa-test sofa-test)
 
 # Installation of the library.

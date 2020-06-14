@@ -1,33 +1,18 @@
-{% set name = "tudat-sofa" %}
+{% set name = "sofa-cmake" %}
 
 package:
   name: "{{ name }}"
   version: {{ environ.get('NEW_GIT_TAG', 'dev') }}
 
 source:
-  path: ../
-#  git_rev: aaf8afe3fdf16be1da09612d7e71f169605d0703
-#  git_url: https://github.com/ggarrett13/sofa.git
+  git_url: ../
 
 requirements:
     build:
         - cmake
         - {{ compiler('c') }}              # [not win]
-        - m2w64-gcc                        # [win]
+#        - m2w64-gcc                        # [win]
         - vs2017_{{ target_platform  }}    # [win]
-
-#outputs:
-#  - name: "{{ name }}"
-#    files:
-#      - lib/libsofa*{{ SHLIB_EXT }}   # [not win]
-#      - lib/libsofa.so.*              # [linux]
-#      - lib/libsofa.*.dylib           # [osx]
-#      - Library/bin/sofa.dll          # [win]
-#      - include/sofa            # [not win]
-#      - lib/cmake/sofa          # [not win]
-#      - Library/include/sofa    # [win]
-#      - Library/lib/sofa.lib    # [win]
-#      - Library/lib/cmake/sofa  # [win]
 
 about:
   home: https://github.com/ggarrett13/sofa
