@@ -359,18 +359,21 @@ target_include_directories(sofa-test PUBLIC
         $<INSTALL_INTERFACE:include>
         )
 
-if(NOT MSVC)
+if (NOT MSVC)
+    # Don't link to m.lib if MSVC.
     target_link_libraries(sofa-test Sofa::sofa m)
-endif(NOT MSVC)
+else ()
+    target_link_libraries(sofa-test Sofa::sofa)
+endif (NOT MSVC)
 
 add_test(sofa-test sofa-test)
 
 # Installation of the library.
 install(TARGETS sofa
         EXPORT sofa_export
-        LIBRARY DESTINATION  "${INSTALL_LIB_DIR}"
-        ARCHIVE DESTINATION  "${INSTALL_LIB_DIR}"
-        RUNTIME DESTINATION  "${INSTALL_BIN_DIR}"
+        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+        RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
         )
 
 # Set <project>_LIBRARIES for <project>-config.cmake.
