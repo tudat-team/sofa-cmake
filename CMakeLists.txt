@@ -21,6 +21,7 @@ endif ()
 
 # Specific project name.
 project(Sofa VERSION 1.0.2 LANGUAGES C)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Get lower string name of PROJECT_NAME for directory configuration.
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
