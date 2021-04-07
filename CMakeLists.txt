@@ -35,7 +35,7 @@ set(POSITION_INDEPENDENT_CODE True)
 #  Offer the user the choice of defining the build variation.
 # +============================================================================
 # Build static library instead of dynamic.
-option(SOFA_BUILD_STATIC_LIBRARY "Build sofa as a static library, instead of dynamic." ON)
+option(SOFA_BUILD_STATIC_LIBRARY "Build sofa as a static library, instead of dynamic." OFF)
 
 # +============================================================================
 # INSTALL TREE CONFIGURATION (Project name independent)
