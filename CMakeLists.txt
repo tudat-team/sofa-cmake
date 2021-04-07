@@ -19,13 +19,16 @@ if (EXISTS "${CMAKE_BINARY_DIR}/CMakeCache.txt")
     file(REMOVE "${CMAKE_BINARY_DIR}/CMakeCache.txt")
 endif ()
 
+# Set cmake policy.
+cmake_policy(SET CMP0069 NEW)
+
 # Specific project name.
 project(Sofa VERSION 1.0.2 LANGUAGES C)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Get lower string name of PROJECT_NAME for directory configuration.
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPER)
+set(POSITION_INDEPENDENT_CODE True)
 
 # +============================================================================
 # BUILD OPTIONS
@@ -340,16 +343,15 @@ target_include_directories(sofa PUBLIC
         $<INSTALL_INTERFACE:include>
         )
 
+# Setup of namespaced library.
+add_library(Sofa::sofa ALIAS sofa)
+
 set_target_properties(sofa
         PROPERTIES
         LINKER_LANGUAGE C
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-        )
-
-# Setup of namespaced library.
-add_library(Sofa::sofa ALIAS sofa)
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 # Testing.
 enable_testing()
@@ -372,9 +374,9 @@ add_test(sofa-test sofa-test)
 # Installation of the library.
 install(TARGETS sofa
         EXPORT sofa_export
-        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
-        RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
         )
 
 # Set <project>_LIBRARIES for <project>-config.cmake.
@@ -398,6 +400,7 @@ install(EXPORT ${PROJECT_NAME_LOWER}_export NAMESPACE ${PROJECT_NAME}:: DESTINAT
 # (this registers the build-tree with a global CMake-registry)
 set(CMAKE_EXPORT_PACKAGE_REGISTRY ON)
 export(PACKAGE ${PROJECT_NAME})
+
 # +============================================================================
 # PROJECT CONFIG
 #  Add the targets, libraries and tests.
