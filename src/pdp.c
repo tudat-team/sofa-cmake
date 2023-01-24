@@ -20,11 +20,11 @@ double iauPdp(double a[3], double b[3])
 **  Returned (function value):
 **            double        a . b
 **
-**  This revision:  2013 June 18
+**  This revision:  2021 May 11
 **
-**  SOFA release 2019-07-22
+**  SOFA release 2021-05-12
 **
-**  Copyright (C) 2019 IAU SOFA Board.  See notes at end.
+**  Copyright (C) 2021 IAU SOFA Board.  See notes at end.
 */
 {
    double w;
@@ -36,9 +36,11 @@ double iauPdp(double a[3], double b[3])
 
    return w;
 
+/* Finished. */
+
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2019
+**  Copyright (C) 2021
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

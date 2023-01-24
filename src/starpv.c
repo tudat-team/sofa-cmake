@@ -1,4 +1,5 @@
 #include "sofa.h"
+#include "sofam.h"
 
 int iauStarpv(double ra, double dec,
               double pmr, double pmd, double px, double rv,
@@ -118,11 +119,11 @@ int iauStarpv(double ra, double dec,
 **
 **     Stumpff, P., 1985, Astron.Astrophys. 144, 232-240.
 **
-**  This revision:  2017 March 16
+**  This revision:  2021 May 11
 **
-**  SOFA release 2019-07-22
+**  SOFA release 2021-05-12
 **
-**  Copyright (C) 2019 IAU SOFA Board.  See notes at end.
+**  Copyright (C) 2021 IAU SOFA Board.  See notes at end.
 */
 {
 /* Smallest allowed parallax */
@@ -165,7 +166,7 @@ int iauStarpv(double ra, double dec,
 
 /* If excessive velocity, arbitrarily set it to zero. */
    v = iauPm(pv[1]);
-   if (v / DC_sofa > VMAX) {
+   if (v / DC > VMAX) {
       iauZp(pv[1]);
       iwarn += 2;
    }
@@ -180,8 +181,8 @@ int iauStarpv(double ra, double dec,
    vst = iauPm(ust);
 
 /* Special-relativity dimensionless parameters. */
-   betsr = vsr / DC_sofa;
-   betst = vst / DC_sofa;
+   betsr = vsr / DC;
+   betst = vst / DC;
 
 /* Determine the inertial-to-observed relativistic correction terms. */
    bett = betst;
@@ -217,9 +218,11 @@ int iauStarpv(double ra, double dec,
 /* Return the status. */
    return iwarn;
 
+/* Finished. */
+
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2019
+**  Copyright (C) 2021
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

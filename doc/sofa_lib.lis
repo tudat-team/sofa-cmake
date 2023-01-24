@@ -1,4 +1,4 @@
-sofa_lib.lis                                              2019 July 22
+sofa_lib.lis                                               2021 April 19
 
                      ----------------------
                      SOFA Astronomy Library
@@ -37,7 +37,8 @@ suitable for convenient direct use by writers of astronomical
 applications.
 
 The astronomy routines call on the SOFA vector/matrix library routines,
-which are separately listed.
+which are separately listed, and described in sofa_vm_f.pdf (Fortran)
+and sofa_vm_c.pdf (C).
 
 The routines are designed to exploit the full floating-point accuracy
 of the machines on which they run, and not to rely on compiler
@@ -94,6 +95,8 @@ ROUTINES
      APER13    update context for Earth rotation
      APIO      prepare for CIRS <-> observed, terrestrial, special
      APIO13    prepare for CIRS <-> observed, terrestrial
+     ATCC13    catalog -> astrometric
+     ATCCQ     quick catalog -> astrometric
      ATCI13    catalog -> CIRS
      ATCIQ     quick ICRS -> CIRS
      ATCIQN    quick ICRS -> CIRS, multiple deflections
@@ -162,6 +165,7 @@ ROUTINES
   Ephemerides (limited precision)
 
      EPV00     Earth position and velocity
+     MOON98    Moon position and velocity
      PLAN94    major-planet position and velocity
 
   Precession, nutation, polar motion
@@ -250,15 +254,15 @@ ROUTINES
 
   Star catalog conversions
 
-     FK425     convert B1950.0 FK4 star catalog data to J2000.0 FK5
-     FK45Z     convert a B1950.0 FK4 star position to J2000.0 FK5, assuming zero proper motion in the FK5 system
-     FK524     convert J2000.0 FK5 star catalog data to B1950.0 FK4
      FK52H     transform FK5 star data into the Hipparcos system
-     FK54Z     convert a J2000.0 FK5 star position to B1950.0 FK4, assuming zero proper motion in FK5 system and zero parallax
      FK5HIP    FK5 to Hipparcos rotation and spin
      FK5HZ     FK5 to Hipparcos assuming zero Hipparcos proper motion
      H2FK5     transform Hipparcos star data into the FK5 system
      HFK5Z     Hipparcos to FK5 assuming zero Hipparcos proper motion
+     FK425     transform FK4 star data into FK5
+     FK45Z     FK4 to FK5 assuming zero FK5 proper motion
+     FK524     transform FK5 star data into FK4
+     FK54Z     FK5 to FK4 assuming zero FK5 proper motion
 
   Ecliptic coordinates
 
@@ -323,6 +327,8 @@ CALLS: FORTRAN VERSION
   :                  REFA, REFB, ASTROM )
    CALL iau_APIO13 ( UTC1, UTC2, DUT1, ELONG, PHI, HM, XP, YP,
   :                  PHPA, TC, RH, WL, ASTROM, J )
+   CALL iau_ATCC13 ( RC, DC, PR, PD, PX, RV, DATE1, DATE2, RA, DA )
+   CALL iau_ATCCQ  ( RC, DC, PR, PD, PX, RV, ASTROM, RA, DA )
    CALL iau_ATCI13 ( RC, DC, PR, PD, PX, RV, DATE1, DATE2, RI, DI, EO )
    CALL iau_ATCIQ  ( RC, DC, PR, PD, PX, RV, ASTROM, RI, DI )
    CALL iau_ATCIQN ( RC, DC, PR, PD, PX, RV, ASTROM, N, B, RI, DI )
@@ -334,7 +340,7 @@ CALLS: FORTRAN VERSION
    CALL iau_ATICQ  ( RI, DI, ASTROM, RC, DC )
    CALL iau_ATCIQN ( RI, DI, ASTROM, N, B, RC, DC )
    CALL iau_ATIO13 ( RI, DI, UTC1, UTC2, DUT1, ELONG, PHI, HM, XP, YP,
-                     PHPA, TC, RH, WL, AOB, ZOB, HOB, DOB, ROB, J )
+  :                  PHPA, TC, RH, WL, AOB, ZOB, HOB, DOB, ROB, J )
    CALL iau_ATIOQ  ( RI, DI, ASTROM, AOB, ZOB, HOB, DOB, ROB )
    CALL iau_ATOC13 ( TYPE, OB1, OB2, UTC1, UTC2, DUT1,
   :                  ELONG, PHI, HM, XP, YP, PHPA, TC, RH, WL,
@@ -398,15 +404,14 @@ CALLS: FORTRAN VERSION
    D =  iau_FASA03 ( T )
    D =  iau_FAUR03 ( T )
    D =  iau_FAVE03 ( T )
-   CALL iau_FK425  ( R1950, D1950, DR1950, DD1950, P1950, V1950,
-  :                  R2000, D2000, DR2000, DD2000, P2000, V2000 )
-   CALL iau_FK45Z  ( R1950, D1950, BEPOCH, R2000, D2000 )
-   CALL iau FK524  ( R2000, D2000,DR2000, DD2000, P2000, V2000,
-  :                  R1950, D1950,DR1950, DD1950, P1950, V1950 )
+   CALL iau_FK425 ( R1950, D1950, DR1950, DD1950, P1950, V1950,
+  :                 R2000, D2000, DR2000, DD2000, P2000, V2000 )
+   CALL iau_FK45Z ( R1950, D1950, BEPOCH, R2000, D2000 )
+   CALL iau_FK524 ( R2000, D2000, DR2000, DD2000, P2000, V2000,
+  :                 R1950, D1950, DR1950, DD1950, P1950, V1950 )
    CALL iau_FK52H  ( R5, D5, DR5, DD5, PX5, RV5,
   :                  RH, DH, DRH, DDH, PXH, RVH )
-   CALL iau_FK54Z  ( R2000, D2000, BEPOCH, R1950, D1950, DR1950,
-  :                  DD1950 )
+   CALL iau_FK54Z ( R2000, D2000, BEPOCH, R1950, D1950, DR1950, DD1950 )
    CALL iau_FK5HIP ( R5H, S5H )
    CALL iau_FK5HZ  ( R5, D5, DATE1, DATE2, RH, DH )
    CALL iau_FW2M   ( GAMB, PHIB, PSI, EPS, R )
@@ -442,6 +447,7 @@ CALLS: FORTRAN VERSION
    CALL iau_LTPB   ( EPJ, RPB )
    CALL iau_LTPECL ( EPJ, VEC )
    CALL iau_LTPEQU ( EPJ, VEQ )
+   CALL iau_MOON98 ( DATE1, DATE2, PV )
    CALL iau_NUM00A ( DATE1, DATE2, RMATN )
    CALL iau_NUM00B ( DATE1, DATE2, RMATN )
    CALL iau_NUM06A ( DATE1, DATE2, RMATN )
@@ -545,6 +551,8 @@ CALLS: C VERSION
                    &astrom );
    i = iauApio13 ( utc1, utc2, dut1, elong, phi, hm, xp, yp,
                    phpa, tc, rh, wl, &astrom );
+       iauAtcc13 ( rc, dc, pr, pd, px, rv, date1, date2, &ra, &da );
+       iauAtccq  ( rc, dc, pr, pd, px, rv, &astrom, &ra, &da );
        iauAtci13 ( rc, dc, pr, pd, px, rv, date1, date2,
                    &ri, &di, &eo );
        iauAtciq  ( rc, dc, pr, pd, px, rv, &astrom, &ri, &di );
@@ -619,16 +627,15 @@ CALLS: C VERSION
    d = iauFasa03 ( t );
    d = iauFaur03 ( t );
    d = iauFave03 ( t );
-       iauFk425  ( r1950, d1950, dr1950, dd1950, p1950, v1950,
-                   &r2000, &d2000, &dr2000, &dd2000, &p2000, &v2000);
-       iauFk45z  ( r1950, d1950, bepoch, &r2000, &d2000);
-
-       iauFk524  ( r2000, d2000, dr2000, dd2000, p2000, v2000,
-                   &r1950, &d1950, &dr1950, &dd1950, &p1950, &v1950);
+       iauFk425 ( r1950, d1950, dr1950, dd1950, p1950, v1950,
+                  &r2000, &d2000, &dr2000, &dd2000, &p2000, &v2000 );
+       iauFk45z ( r1950, d1950, bepoch, &r2000, &d2000 );
+       iauFk524 ( r2000, d2000, dr2000, dd2000, p2000, v2000,
+                  &r1950, &d1950, &dr1950, &dd1950, &p1950, &v1950 );
        iauFk52h  ( r5, d5, dr5, dd5, px5, rv5,
                    &rh, &dh, &drh, &ddh, &pxh, &rvh );
-       iauFk54z  ( r2000, d2000, bepoch, &r1950, &d1950,&dr1950,
-                   &dd1950);
+       iauFk54z ( r2000, d2000, bepoch,
+                  &r1950, &d1950, &dr1950, &dd1950 );
        iauFk5hip ( r5h, s5h );
        iauFk5hz  ( r5, d5, date1, date2, &rh, &dh );
        iauFw2m   ( gamb, phib, psi, eps, r );
@@ -665,6 +672,7 @@ CALLS: C VERSION
        iauLtpb   ( epj,  rpb );
        iauLtpecl ( epj,  vec );
        iauLtpequ ( epj,  veq );
+       iauMoon98 ( date1, date2, pv );
        iauNum00a ( date1, date2, rmatn );
        iauNum00b ( date1, date2, rmatn );
        iauNum06a ( date1, date2, rmatn );

@@ -28,11 +28,11 @@ void iauPpsp(double a[3], double s, double b[3], double apsb[3])
 **     iauSxp       multiply p-vector by scalar
 **     iauPpp       p-vector plus p-vector
 **
-**  This revision:  2013 June 18
+**  This revision:  2021 May 11
 **
-**  SOFA release 2019-07-22
+**  SOFA release 2021-05-12
 **
-**  Copyright (C) 2019 IAU SOFA Board.  See notes at end.
+**  Copyright (C) 2021 IAU SOFA Board.  See notes at end.
 */
 {
    double sb[3];
@@ -44,11 +44,11 @@ void iauPpsp(double a[3], double s, double b[3], double apsb[3])
 /* a + s*b. */
    iauPpp(a, sb, apsb);
 
-   return;
+/* Finished. */
 
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2019
+**  Copyright (C) 2021
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

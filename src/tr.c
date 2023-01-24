@@ -25,11 +25,11 @@ void iauTr(double r[3][3], double rt[3][3])
 **  Called:
 **     iauCr        copy r-matrix
 **
-**  This revision:  2013 June 18
+**  This revision:  2021 May 11
 **
-**  SOFA release 2019-07-22
+**  SOFA release 2021-05-12
 **
-**  Copyright (C) 2019 IAU SOFA Board.  See notes at end.
+**  Copyright (C) 2021 IAU SOFA Board.  See notes at end.
 */
 {
    double wm[3][3];
@@ -43,11 +43,11 @@ void iauTr(double r[3][3], double rt[3][3])
    }
    iauCr(wm, rt);
 
-   return;
+/* Finished. */
 
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2019
+**  Copyright (C) 2021
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

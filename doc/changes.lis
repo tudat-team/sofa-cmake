@@ -1,113 +1,116 @@
-            Updates for SOFA Release 15 : 2019 July 22
-            - - - - - - - - - - - - - - - - - - - - - - -
+ 
+            Updates for SOFA Release 18 : 2021 May 11
+            - - - - - - - - - - - - - - - - - - - - -
 
 Summary of Changes
 ------------------
 The changes fall into the following categories:
 
-1. Wrong sign in the ANSI C function iauTdbtcb corrected.
+(1) Introduction of three new support routines.  Two deal with 
+    calculating astrometric places, while the third provides the 
+    approximate lunar position and velocity.  The validation program 
+    has been duly updated.
 
-2. Update DAT release year.
+(2) A rearrangement of the ANSI C header files sofam.h and sofa.h. 
+    The consequence of this is that an explicit #include "sofam.h" 
+    has been added to many of the SOFA functions.  Thus developers 
+    of applications that use constants from sofa.h will now need to 
+    include an explicit #include <sofam.h>.  Further explanation is 
+    given below.
+    
+(3) The year of validity for the leap second (dat) routine has been 
+    extended.
 
-3. Implementation of four new routines that have been added to the
-   Star Catalog Conversions section dealing with the transformation
-   between the FK4 and the FK5 reference systems.  These routines
-   have have been included partly for completeness but mainly so that
-   positions in publications pre-1984 can be properly handled.  They
-   cover conversions between B1950.0 FK4 and J2000.0 FK5, with and
-   without proper motion.
-
-4. Enhancement of 17 routines that compare the two components of
-   given date/time arguments to minimize rounding errors, so that
-   optimum results are achieved even when one of the arguments is
-   negative.  (SOFA is grateful to the Astropy group for drawing
-   attention to the deficiency.)
-
-5. Due to introducing these new routines, the Astrometry Tools
-   Cookbook, the test program and other supporting files have also
-   been updated.
-
-6. Miscellaneous typographical corrections and improvements to
-   various other documents.
+(4) Typographical and other minor corrections to the documentation. 
+    Those that are purely typographical (e.g. punctuation) are not 
+    listed).
 
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
 FORTRAN 77 Library
 ------------------
 
-1.  iau_DAT      Year ....
+iau_ATCC13  New support routine to transform a star's ICRS catalog 
+            entry (epoch J2000.0) into ICRS astrometric place.
+            
+iau_ATCCQ   New support routine; a "quick" transformation of a star's 
+            ICRS catalog entry (epoch J2000.0) into ICRS astrometric 
+            place, given precomputed star-independent astrometry 
+            parameters.
 
-2.  iau_FK425    Convert B1950.0 FK4 star catalog data to J2000.0 FK5.
-    iau_FK524    Convert J2000.0 FK5 star catalog data to B1950.0 FK4.
-    iau_FK45Z    Convert a B1950.0 FK4 star position to J2000.0 FK5,
-                 assuming zero proper motion in the FK5 system.
-    iau_FK54Z    Convert a J2000.0 FK5 star position to B1950.0 FK4,
-                 assuming zero proper motion in FK5 and zero parallax.
+iau_dat     Year extended to 2021.
 
-3. iau_JD2CAL    In all these routines the Fortran function ABS was
-   iau_JD2CALF   included when comparing the two argument data/time
-   iau_TAITT     parameter.
-   iau_TAIUT1
-   iau_TAIUTC
-   iau_TCBTDB
-   iau_TCGTT
-   iau_TDBTCB
-   iau_TDBTT
-   iau_TTTAI
-   iau_TTTCG
-   iau_TTTDB
-   IAU_TTUT1
-   iau_UT1TAI
-   iau_UT1TT
-   iau_UT1UTC
-   iau_UTCTAI
+iau_G2ICRS  Documentation updated.
+iau_ICRS2G
 
-4. t_sofa_f.for     Addition of new routines.
+iau_MOON98  New support routine for calculating approximate geocentric 
+            position and velocity of the Moon.  
+ 
+iau_PLAN94  Documentation updates and corrections.
+ 
+t_sofa_f    The test program has been updated to include the three new 
+            routines.
+
+N.B. Both iau_MOON98 and iau_PLAN94 provide only approximate positions
+     and do not use IAU endorsed theories.
 
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
 ANSI C Library
 --------------
 
-1.  iauTdbtcb.c Replace
-                    *tcb1 = f - ( d - ( f - t77tf ) ) * elbb;
-                by
-                    *tcb1 = f + ( d - ( f - t77tf ) ) * elbb;
+sofa.h      The information in both these files has been rearranged to
+sofam.h     eliminate problems encountered by C++ developers.  
+            The change has 
+            (i)  moved the structures from sofam.h into sofa.h and
+            (ii) thus eliminated the #include "sofam.h" from sofa.h.
+            The consequence of this change for SOFA functions is that 
+            an explicit #include "sofam.h" has had to be added to some 
+            of them.
 
-                n.b. the sign error affects only one of two paths
-                through the code.
+            Previously, sofam.h contained both structure definitions and
+            constants, and was #included by sofa.h, which was otherwise
+            dedicated to function prototypes.  The difficulty was that 
+            short uppercase names in sofam.h were colliding with 
+            C++ variables. 
 
-2. iauDat       Release year.
+            The consequence of the change for developers is that any 
+            application that uses constants from sofa.h will now need an 
+            explicit #include <sofam.h>.  It should, however, be noted 
+            that the contents of sofam.h are not formally part of the 
+            SOFA API, and so such an application is vulnerable to 
+            future changes.  Rather than adding an #include <sofam.h> 
+            to applications, it would be better to replicate the needed 
+            macros in the user code.
 
-3. iauFk425     Convert B1950.0 FK4 star catalog data to J2000.0 FK5.
-   iauFk524     Convert J2000.0 FK5 star catalog data to B1950.0 FK4.
-   iauFk45z     Convert a B1950.0 FK4 star position to J2000.0 FK5,
-                assuming zero proper motion in the FK5 system.
-   iauFk54z     Convert a J2000.0 FK5 star position to B1950.0 FK4,
-                assuming zero proper motion in FK5 and zero parallax.
-   sofa.h       Inclusion of the above routines' prototype
-                declarations.
+iauAtcc13   New support function to transform a star's ICRS catalog 
+            entry (epoch J2000.0) into ICRS astrometric place.
 
-4. iauJd2cal    In these 17 routines the ANSI C function fabs() was
-   iauJd2calf   included when comparing the two argument data/time
-   iauJd2calf   parameter.
-   iauTaitt
-   iauTaiut1
-   iauTaiutc
-   iauTcbtdb
-   iauTcgtt
-   iauTdbtcb
-   iauTdbtt
-   iauTttai
-   iauTttcg
-   iauTttdb
-   IAUTtut1
-   iauUt1tai
-   iauUt1tt
-   iauUt1utc
-   iauUtctai
+iauAtccq    New support function, a "quick" transformation of a star's
+            ICRS catalog entry (epoch J2000.0) into ICRS astrometric 
+            place, given precomputed star-independent astrometry 
+            parameters.
 
-5. t_sofa_c.c   Addition of new routines.
+iauDat      Year extended to 2021.
+
+iauG2icrs   Documentation updated.
+iauIcrs2g
+
+makefile    An error has been corrected when using "make check".  The 
+            directory for the include files was incorrect.
+
+iauMoon98   New support function for calculating approximate geocentric 
+            position and velocity of the Moon.  
+
+iauPlan94   Documentation updates and corrections.
+
+t_sofa_c    The test program has been updated to include the three new 
+            functions.
+
+Cosmetic changes to improve consistency have been made to the ANSI C code.
+
+N.B. Both iauMoon98 and iauPlan94 provide only approximate positions 
+     and do not use IAU endorsed theories.
 
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 + SOFA thanks all those who have reported the various issues that go
@@ -115,6 +118,5 @@ ANSI C Library
 + relevant.
 +
 + End of updates
-+ 2019 June 30
++ 2021 May 11
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-

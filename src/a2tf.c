@@ -1,4 +1,5 @@
 #include "sofa.h"
+#include "sofam.h"
 
 void iauA2tf(int ndp, double angle, char *sign, int ihmsf[4])
 /*
@@ -18,11 +19,8 @@ void iauA2tf(int ndp, double angle, char *sign, int ihmsf[4])
 **     angle   double  angle in radians
 **
 **  Returned:
-**     sign    char    '+' or '-'
+**     sign    char*   '+' or '-'
 **     ihmsf   int[4]  hours, minutes, seconds, fraction
-**
-**  Called:
-**     iauD2tf      decompose days to hms
 **
 **  Notes:
 **
@@ -56,21 +54,24 @@ void iauA2tf(int ndp, double angle, char *sign, int ihmsf[4])
 **     case where angle is very nearly 2pi and rounds up to 24 hours,
 **     by testing for ihmsf[0]=24 and setting ihmsf[0-3] to zero.
 **
-**  This revision:  2013 July 31
+**  Called:
+**     iauD2tf      decompose days to hms
 **
-**  SOFA release 2019-07-22
+**  This revision:  2021 May 11
 **
-**  Copyright (C) 2019 IAU SOFA Board.  See notes at end.
+**  SOFA release 2021-05-12
+**
+**  Copyright (C) 2021 IAU SOFA Board.  See notes at end.
 */
 {
 /* Scale then use days to h,m,s function. */
    iauD2tf(ndp, angle/D2PI, sign, ihmsf);
 
-   return;
+/* Finished. */
 
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2019
+**  Copyright (C) 2021
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

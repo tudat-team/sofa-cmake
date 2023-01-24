@@ -1,4 +1,5 @@
 #include "sofa.h"
+#include "sofam.h"
 
 int iauStarpm(double ra1, double dec1,
               double pmr1, double pmd1, double px1, double rv1,
@@ -111,11 +112,11 @@ int iauStarpm(double ra1, double dec1,
 **     iauPdp       scalar product of two p-vectors
 **     iauPvstar    space motion pv-vector to star catalog data
 **
-**  This revision:  2013 June 18
+**  This revision:  2021 May 11
 **
-**  SOFA release 2019-07-22
+**  SOFA release 2021-05-12
 **
-**  Copyright (C) 2019 IAU SOFA Board.  See notes at end.
+**  Copyright (C) 2021 IAU SOFA Board.  See notes at end.
 */
 {
    double pv1[2][3], tl1, dt, pv[2][3], r2, rdv, v2, c2mv2, tl2,
@@ -127,7 +128,7 @@ int iauStarpm(double ra1, double dec1,
    j1 = iauStarpv(ra1, dec1, pmr1, pmd1, px1, rv1, pv1);
 
 /* Light time when observed (days). */
-   tl1 = iauPm(pv1[0]) / DC_sofa;
+   tl1 = iauPm(pv1[0]) / DC;
 
 /* Time interval, "before" to "after" (days). */
    dt = (ep2a - ep1a) + (ep2b - ep1b);
@@ -141,7 +142,7 @@ int iauStarpm(double ra1, double dec1,
    r2 = iauPdp(pv[0], pv[0]);
    rdv = iauPdp(pv[0], pv[1]);
    v2 = iauPdp(pv[1], pv[1]);
-   c2mv2 = DC_sofa*DC_sofa - v2;
+   c2mv2 = DC*DC - v2;
    if (c2mv2 <=  0) return -1;
    tl2 = (-rdv + sqrt(rdv*rdv + c2mv2*r2)) / c2mv2;
 
@@ -157,9 +158,11 @@ int iauStarpm(double ra1, double dec1,
 
    return j;
 
+/* Finished. */
+
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2019
+**  Copyright (C) 2021
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

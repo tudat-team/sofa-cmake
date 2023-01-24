@@ -328,6 +328,9 @@ set(SOFA_SOURCE_FILES
         src/s2pv.c
         src/ut1tai.c
         src/plan94.c
+        src/atcc13.c
+        src/atccq.c
+        src/moon98.c
         )
 
 # Setup of library.
