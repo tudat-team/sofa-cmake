@@ -166,7 +166,7 @@ int iauStarpv(double ra, double dec,
 
 /* If excessive velocity, arbitrarily set it to zero. */
    v = iauPm(pv[1]);
-   if (v / DC > VMAX) {
+   if (v / DC_sofa > VMAX) {
       iauZp(pv[1]);
       iwarn += 2;
    }
@@ -181,8 +181,8 @@ int iauStarpv(double ra, double dec,
    vst = iauPm(ust);
 
 /* Special-relativity dimensionless parameters. */
-   betsr = vsr / DC;
-   betst = vst / DC;
+   betsr = vsr / DC_sofa;
+   betst = vst / DC_sofa;
 
 /* Determine the observed-to-inertial correction terms. */
    bett = betst;
@@ -209,7 +209,7 @@ int iauStarpv(double ra, double dec,
    iauSxp(d, ust, ut);
 
 /* Compute inertial radial velocity vector (au/d). */
-   iauSxp(DC*(d*betsr+del), pu, ur);
+   iauSxp(DC_sofa*(d*betsr+del), pu, ur);
 
 /* Combine the two to obtain the inertial space velocity vector. */
    iauPpp(ur, ut, pv[1]);

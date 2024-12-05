@@ -128,7 +128,7 @@ int iauStarpm(double ra1, double dec1,
    j1 = iauStarpv(ra1, dec1, pmr1, pmd1, px1, rv1, pv1);
 
 /* Light time when observed (days). */
-   tl1 = iauPm(pv1[0]) / DC;
+   tl1 = iauPm(pv1[0]) / DC_sofa;
 
 /* Time interval, "before" to "after" (days). */
    dt = (ep2a - ep1a) + (ep2b - ep1b);
@@ -142,7 +142,7 @@ int iauStarpm(double ra1, double dec1,
    r2 = iauPdp(pv[0], pv[0]);
    rdv = iauPdp(pv[0], pv[1]);
    v2 = iauPdp(pv[1], pv[1]);
-   c2mv2 = DC*DC - v2;
+   c2mv2 = DC_sofa*DC_sofa - v2;
    if (c2mv2 <= 0.0) return -1;
    tl2 = (-rdv + sqrt(rdv*rdv + c2mv2*r2)) / c2mv2;
 

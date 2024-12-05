@@ -629,24 +629,24 @@ CALLS: FORTRAN VERSION
   :                  REFA, REFB, ASTROM )
    CALL iau_APIO13 ( UTC1, UTC2, DUT1, ELONG, PHI, HM, XP, YP,
   :                  PHPA, TC, RH, WL, ASTROM, J )
-   CALL iau_ATCC13 ( RC, DC, PR, PD, PX, RV, DATE1, DATE2, RA, DA )
-   CALL iau_ATCCQ  ( RC, DC, PR, PD, PX, RV, ASTROM, RA, DA )
-   CALL iau_ATCI13 ( RC, DC, PR, PD, PX, RV, DATE1, DATE2, RI, DI, EO )
-   CALL iau_ATCIQ  ( RC, DC, PR, PD, PX, RV, ASTROM, RI, DI )
-   CALL iau_ATCIQN ( RC, DC, PR, PD, PX, RV, ASTROM, N, B, RI, DI )
-   CALL iau_ATCIQZ ( RC, DC, ASTROM, RI, DI )
-   CALL iau_ATCO13 ( RC, DC, PR, PD, PX, RV, UTC1, UTC2, DUT1, ELONG,
+   CALL iau_ATCC13 ( RC, DC_sofa, PR, PD, PX, RV, DATE1, DATE2, RA, DA )
+   CALL iau_ATCCQ  ( RC, DC_sofa, PR, PD, PX, RV, ASTROM, RA, DA )
+   CALL iau_ATCI13 ( RC, DC_sofa, PR, PD, PX, RV, DATE1, DATE2, RI, DI, EO )
+   CALL iau_ATCIQ  ( RC, DC_sofa, PR, PD, PX, RV, ASTROM, RI, DI )
+   CALL iau_ATCIQN ( RC, DC_sofa, PR, PD, PX, RV, ASTROM, N, B, RI, DI )
+   CALL iau_ATCIQZ ( RC, DC_sofa, ASTROM, RI, DI )
+   CALL iau_ATCO13 ( RC, DC_sofa, PR, PD, PX, RV, UTC1, UTC2, DUT1, ELONG,
   :                  PHI, HM, XP, YP, PHPA, TC, RH, WL,
   :                  AOB, ZOB, HOB, DOB, ROB, EO, J )
-   CALL iau_ATIC13 ( RI, DI, DATE1, DATE2, RC, DC, EO )
-   CALL iau_ATICQ  ( RI, DI, ASTROM, RC, DC )
-   CALL iau_ATCIQN ( RI, DI, ASTROM, N, B, RC, DC )
+   CALL iau_ATIC13 ( RI, DI, DATE1, DATE2, RC, DC_sofa, EO )
+   CALL iau_ATICQ  ( RI, DI, ASTROM, RC, DC_sofa )
+   CALL iau_ATCIQN ( RI, DI, ASTROM, N, B, RC, DC_sofa )
    CALL iau_ATIO13 ( RI, DI, UTC1, UTC2, DUT1, ELONG, PHI, HM, XP, YP,
   :                  PHPA, TC, RH, WL, AOB, ZOB, HOB, DOB, ROB, J )
    CALL iau_ATIOQ  ( RI, DI, ASTROM, AOB, ZOB, HOB, DOB, ROB )
    CALL iau_ATOC13 ( TYPE, OB1, OB2, UTC1, UTC2, DUT1,
   :                  ELONG, PHI, HM, XP, YP, PHPA, TC, RH, WL,
-  :                  RC, DC, J )
+  :                  RC, DC_sofa, J )
    CALL iau_ATOI13 ( TYPE, OB1, OB2, UTC1, UTC2, DUT1,
   :                  ELONG, PHI, HM, XP, YP, PHPA, TC, RH, WL,
   :                  RI, DI, J  )
@@ -767,7 +767,7 @@ CALLS: FORTRAN VERSION
    CALL iau_PMAT00 ( DATE1, DATE2, RBP )
    CALL iau_PMAT06 ( DATE1, DATE2, RBP )
    CALL iau_PMAT76 ( DATE1, DATE2, RMATP )
-   CALL iau_PMPX   ( RC, DC, PR, PD, PX, RV, PMT, POB, PCO )
+   CALL iau_PMPX   ( RC, DC_sofa, PR, PD, PX, RV, PMT, POB, PCO )
    CALL iau_PMSAFE ( RA1, DEC1, PMR1, PMD1, PX1, RV1,
   :                  EP1A, EP1B, EP2A, EP2B,
   :                  RA2, DEC2, PMR2, PMD2, PX2, RV2, J )
@@ -19034,7 +19034,7 @@ void iauSxpv(double s, double pv[2][3], double spv[2][3]);
 #define AULT (DAU/CMPS)
 
 /* Speed of light (au per day) */
-#define DC (DAYSEC/AULT)
+#define DC_sofa (DAYSEC/AULT)
 
 /* L_G = 1 - d(TT)/d(TCG) */
 #define ELG (6.969290134e-10)

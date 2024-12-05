@@ -120,8 +120,8 @@ int iauPvstar(double pv[2][3], double *ra, double *dec,
    vt = iauPm(ut);
 
 /* Special-relativity dimensionless parameters. */
-   bett = vt / DC;
-   betr = vr / DC;
+   bett = vt / DC_sofa;
+   betr = vr / DC_sofa;
 
 /* The observed-to-inertial correction terms. */
    d = 1.0 + betr;
@@ -133,7 +133,7 @@ int iauPvstar(double pv[2][3], double *ra, double *dec,
    iauSxp(1.0/d, ut, ust);
 
 /* Compute observed radial velocity vector (au/d). */
-   iauSxp(DC*(betr-del)/d, pu, usr);
+   iauSxp(DC_sofa*(betr-del)/d, pu, usr);
 
 /* Combine the two to obtain the observed velocity vector. */
    iauPpp(usr, ust, pv[1]);

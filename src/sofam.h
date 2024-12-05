@@ -89,7 +89,7 @@
 #define AULT (DAU/CMPS)
 
 /* Speed of light (au per day) */
-#define DC (DAYSEC/AULT)
+#define DC_sofa (DAYSEC/AULT)
 
 /* L_G = 1 - d(TT)/d(TCG) */
 #define ELG (6.969290134e-10)
