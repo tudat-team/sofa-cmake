@@ -1,6 +1,7 @@
-#include <sofa.h>
-#include "sofam.h"
 #include <stdio.h>
+#include "sofa/sofa.h"
+#include "sofa/sofam.h"
+
 
 static int verbose = 0;
 
