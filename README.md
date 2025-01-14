@@ -4,9 +4,13 @@
 
 # SOFA-CMake
 
-This repository has been copied directly from http://www.iausofa.org, for use in related software projects on Github. The copyright of the code belongs to the Board of the International Astronomical Union. 
+This repository has been copied directly from http://www.iausofa.org, for use in the TU Delft Astrodynamics Toolbox (Tudat) ecosystem. The copyright of the code belongs to the Board of the International Astronomical Union. 
 
-SOFA Software License:
+* For more details on Tudat, we refer to the [project website](https://docs.tudat.space/en/latest/) and our [project Github main page](https://github.com/tudat-team)
+* Conda package for this repository are available on [anaconda](anaconda.org/tudat-team/sofa-cmake/), which is built through the [tudat-feedstock](https://github.com/tudat-team/sofa-cmake-feedstock) on [Azure](https://dev.azure.com/tudat-team/feedstock-builds/_build?definitionId=5)
+
+
+**SOFA Software License:**
 
 By using this software you accept the following six terms and conditions which apply to its use.
 
