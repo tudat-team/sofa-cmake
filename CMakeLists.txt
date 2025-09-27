@@ -12,7 +12,7 @@
 #
 
 # Specify minimum CMake version required to compile Sofa.
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.20)
 
 # Trick for recompiling changes for BUILD-TREE.
 if (EXISTS "${CMAKE_BINARY_DIR}/CMakeCache.txt")
